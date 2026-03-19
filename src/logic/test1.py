@@ -9,6 +9,8 @@ printer = PhonemoPrinter(port=port)
 
 try:
     printer.connect()
+    fv = printer.get_firmaware_verion()
+    print(fv)
 
 except Exception as e:
     print(e)

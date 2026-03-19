@@ -32,7 +32,17 @@ class PhonemoPrinter:
         return self.serial and self.serial.is_open
 
     def get_firmaware_verion(self) -> None:
-        pass
+        if not self.is_connected():
+            raise RuntimeError("Not connected to printer")
+        
+        self.serial.write(bytes([0x1f, 0x11, 0x07]))
+
+        response = self.serial.read(5)
+        print(len(response))
+        if response and len(response) >= 5:
+            return f"{response[4]}.{response[3]}.{response[2]}"
+        else:
+            raise RuntimeError("Failed to read firmware version.")
         
 
     def get_battery_level(self) -> None:
@@ -64,3 +74,4 @@ class PhonemoPrinter:
         import serial.tools.list_ports
         ports = [port.device for port in serial.tools.list_ports.comports()]
         return ports
+    
