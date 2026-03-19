@@ -38,15 +38,22 @@ class PhonemoPrinter:
         self.serial.write(bytes([0x1f, 0x11, 0x07]))
 
         response = self.serial.read(5)
-        print(len(response))
         if response and len(response) >= 5:
             return f"{response[4]}.{response[3]}.{response[2]}"
-        else:
-            raise RuntimeError("Failed to read firmware version.")
+        raise RuntimeError("Failed to read firmware version.")
         
 
     def get_battery_level(self) -> None:
-        pass
+        if not self.is_connected():
+            raise RuntimeError("Not connected to printer")
+        
+        self.serial.write(bytes([0x1f, 0x11, 0x08]))
+        
+        response = self.serial.read(3)
+
+        if response and len(response) >= 3:
+            return response[2]
+        raise RuntimeError("Failed to read battery level.")
 
     def get_serial_number(self) -> None:
         pass

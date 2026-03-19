@@ -11,6 +11,8 @@ try:
     printer.connect()
     fv = printer.get_firmaware_verion()
     print(fv)
+    bl = printer.get_battery_level()
+    print(bl)
 
 except Exception as e:
     print(e)
