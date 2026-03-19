@@ -8,16 +8,32 @@ class PhonemoPrinter:
         self.serial: Optional[serial.Serial] = None
 
     def connect(self) -> None:
-        pass
+        if self.serial is not None and self.serial.is_open:
+            print("Already connected to printer")
+            return
+        
+        try:
+            if self.port is None:
+                raise RuntimeError("No port given.")
+            self.serial = serial.Serial(port=self.port, baudrate=self.baudrate, timeout=1.0)
+            print(f"Connected to printer {self.port}")
+        
+        except serial.SerialException as e:
+            raise RuntimeError(f"Failed to connect to printer: {e}")
+
 
     def disconnect(self) -> None:
-        pass
+        if self.is_connected():
+            self.serial.close()
+            self.serial = None
+            print("Disconnected printer.")
 
-    def is_connected(self) -> None:
-        pass
+    def is_connected(self) -> bool:
+        return self.serial and self.serial.is_open
 
     def get_firmaware_verion(self) -> None:
         pass
+        
 
     def get_battery_level(self) -> None:
         pass
@@ -42,3 +58,9 @@ class PhonemoPrinter:
 
     def print_feed_lines(self) -> None:
         pass
+
+    @staticmethod
+    def list_available_ports() -> list[str]:
+        import serial.tools.list_ports
+        ports = [port.device for port in serial.tools.list_ports.comports()]
+        return ports
