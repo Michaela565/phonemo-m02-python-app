@@ -67,7 +67,15 @@ class PhonemoPrinter:
         raise RuntimeError("Failed to read battery level.")
 
     def get_paper_state(self) -> None:
-        pass
+        self.is_connected()
+
+        self.serial.write(bytes([0x1f, 0x11, 0x11]))
+
+        response = self.serial.read(3)
+
+        if response and len(response) >= 3:
+            return response[2] | (response[1] << 8) | (response[0] << 16)
+        raise RuntimeError("Failed to read battery level.")
 
     def initialize(self) -> None:
         pass

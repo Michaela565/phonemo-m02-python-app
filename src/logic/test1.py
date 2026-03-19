@@ -15,6 +15,8 @@ try:
     print(bl)
     sn = printer.get_serial_number()
     print(sn)
+    ps = printer.get_paper_state()
+    print(ps)
 
 except Exception as e:
     print(e)
