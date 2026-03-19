@@ -23,17 +23,18 @@ class PhonemoPrinter:
 
 
     def disconnect(self) -> None:
-        if self.is_connected():
-            self.serial.close()
-            self.serial = None
-            print("Disconnected printer.")
+        self.is_connected()
+        self.serial.close()
+        self.serial = None
+        print("Disconnected printer.")
 
     def is_connected(self) -> bool:
-        return self.serial and self.serial.is_open
+        if not (self.serial and self.serial.is_open):
+            raise RuntimeError("Not connected to printer")
+        return True
 
     def get_firmaware_verion(self) -> None:
-        if not self.is_connected():
-            raise RuntimeError("Not connected to printer")
+        self.is_connected()
         
         self.serial.write(bytes([0x1f, 0x11, 0x07]))
 
@@ -44,8 +45,7 @@ class PhonemoPrinter:
         
 
     def get_battery_level(self) -> None:
-        if not self.is_connected():
-            raise RuntimeError("Not connected to printer")
+        self.is_connected()
         
         self.serial.write(bytes([0x1f, 0x11, 0x08]))
         
@@ -56,7 +56,7 @@ class PhonemoPrinter:
         raise RuntimeError("Failed to read battery level.")
 
     def get_serial_number(self) -> None:
-        pass
+        self.is_connected()
 
     def get_paper_state(self) -> None:
         pass
