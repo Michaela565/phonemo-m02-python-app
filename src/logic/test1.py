@@ -13,6 +13,8 @@ try:
     print(fv)
     bl = printer.get_battery_level()
     print(bl)
+    sn = printer.get_serial_number()
+    print(sn)
 
 except Exception as e:
     print(e)
