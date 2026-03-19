@@ -17,6 +17,8 @@ try:
     print(sn)
     ps = printer.get_paper_state()
     print(ps)
+    printer.initialize()
+    printer.alignCenter()
 
 except Exception as e:
     print(e)

@@ -93,8 +93,12 @@ class PhonemoPrinter:
     def print_image(self) -> None:
         pass
 
-    def print_feed_lines(self) -> None:
-        pass
+    def print_feed_lines(self, num: int) -> None:
+        self.is_connected()
+        if num < 0 or num > 255:
+            raise RuntimeError("Number of lines must be between 0 and 255.")
+        
+        self.serial.write(bytes([0x1b, 0x64, num]))
 
     @staticmethod
     def list_available_ports() -> list[str]:
