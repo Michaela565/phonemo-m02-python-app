@@ -91,7 +91,9 @@ class PhonemoPrinter:
         print("Successfully aligned center.")
 
     def print_image(self) -> None:
-        pass
+        self.is_connected()
+        self.initialize()
+        self.alignCenter()
 
     def print_feed_lines(self, num: int) -> None:
         self.is_connected()
