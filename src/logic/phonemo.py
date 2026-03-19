@@ -81,10 +81,14 @@ class PhonemoPrinter:
         self.is_connected()
 
         self.serial.write(bytes([0x1b, 0x40]))
+        print("Successfully initiated.")
 
 
     def alignCenter(self) -> None:
-        pass
+        self.is_connected()
+
+        self.serial.write(bytes([0x1b, 0x61, 0x01]))
+        print("Successfully aligned center.")
 
     def print_image(self) -> None:
         pass
