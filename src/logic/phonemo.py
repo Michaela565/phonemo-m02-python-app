@@ -1,5 +1,6 @@
 import serial
 from typing import Optional
+from printerimage import PrinterImage
 
 class PhonemoPrinter:
     def __init__(self, port: Optional[str] = None, baudrate: int = 9600):
@@ -90,10 +91,31 @@ class PhonemoPrinter:
         self.serial.write(bytes([0x1b, 0x61, 0x01]))
         print("Successfully aligned center.")
 
-    def print_image(self) -> None:
+    def print_image(self, image: PrinterImage) -> None:
         self.is_connected()
         self.initialize()
         self.alignCenter()
+        # if image.width % 8 != 0:
+        #     raise RuntimeError("Image width must be a multiple of 8.")
+
+        # if len(image.bits) != (image.width/8) * image.height:
+        #     raise RuntimeError("Image bits length does not match width and height.")
+        mode = 0
+        byteWidth = image.width # removed / 8
+        height = image.height
+
+        imageData = bytearray([
+            0x1d,
+            0x76,
+            0x30,
+            mode,
+            byteWidth & 0xff,
+            (byteWidth >> 8) & 0xff,
+            height & 0xff,
+            (height >> 8) & 0xff])
+
+        imageData.extend(image.bits)
+        self.serial.write(imageData)
 
     def print_feed_lines(self, num: int) -> None:
         self.is_connected()
