@@ -1,6 +1,6 @@
 from phonemo import PhonemoPrinter
 from printerimage import *
-
+from imageprocessing import *
 
 ports = PhonemoPrinter.list_available_ports()
 for port in ports: print(port)
@@ -37,7 +37,7 @@ def print_test():
     print(sn)
     ps = printer.get_paper_state()
     print(ps)
-    image = ImageConverter.load_from_file("G:\pain in programming\phonemo-m02-python-app\src\logic\miku1.jpg")
+    image = ImageConverter.load_from_file("G:\pain in programming\phonemo-m02-python-app\src\logic\miku.jpg")
     printer.print_image(image)
 
 try:
