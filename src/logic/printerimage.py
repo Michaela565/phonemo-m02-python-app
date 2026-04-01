@@ -1,7 +1,7 @@
 from PIL import Image, ImageOps
 
 class PrinterImage:
-    def __init__(self, height: int, width: int, bits: bytearray):
+    def __init__(self, height: int, width: int, bits: list[bytearray]):
         self.height = height
         self.width = width
         self.bits = bits

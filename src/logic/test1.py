@@ -37,7 +37,7 @@ def print_test():
     print(sn)
     ps = printer.get_paper_state()
     print(ps)
-    image = ImageConverter.load_from_file("G:\pain in programming\phonemo-m02-python-app\src\logic\miku.jpg")
+    image = ImageConverter.load_from_file("G:\pain in programming\phonemo-m02-python-app\src\logic\miku1.jpg")
     printer.print_image(image)
 
 try:

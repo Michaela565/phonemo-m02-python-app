@@ -95,13 +95,14 @@ class PhonemoPrinter:
         self.is_connected()
         self.initialize()
         self.alignCenter()
-        # if image.width % 8 != 0:
-        #     raise RuntimeError("Image width must be a multiple of 8.")
+
+        if image.width % 8 != 0:
+            raise RuntimeError("Image width must be a multiple of 8.")
 
         # if len(image.bits) != (image.width/8) * image.height:
         #     raise RuntimeError("Image bits length does not match width and height.")
         mode = 0
-        byteWidth = image.width # removed / 8
+        byteWidth = image.width // 8
         height = image.height
 
         imageData = bytearray([
@@ -114,7 +115,16 @@ class PhonemoPrinter:
             height & 0xff,
             (height >> 8) & 0xff])
 
-        imageData.extend(image.bits)
+        for line in range(height):
+            for byte_num in range(byteWidth):
+                byte = 0
+                for bit in range(8):
+                    pixel = image.bits[line][byte_num * 8 + bit]
+                    byte |= (pixel & 0x01) << (7 - bit)
+
+                imageData.append(byte)
+
+        # imageData.extend(image.bits)
         self.serial.write(imageData)
 
     def print_feed_lines(self, num: int) -> None:
